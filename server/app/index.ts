@@ -8,11 +8,11 @@ import Resolvers from "./graphql/resolvers";
 
 import mongoose from "mongoose";
 
+const URI: string = process.env.URI as string;
+
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(
-      "mongodb+srv://admin:admin@cluster.bexhatb.mongodb.net/?retryWrites=true&w=majority"
-    );
+    const conn = await mongoose.connect(URI);
 
     console.log(`MongoDB connected ${conn.connection.host}`);
   } catch (e) {
