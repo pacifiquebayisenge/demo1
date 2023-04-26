@@ -5,6 +5,7 @@ import http from "http";
 
 import Schema from "./graphql/schema";
 import Resolvers from "./graphql/resolvers";
+import "dotenv/config";
 
 import mongoose from "mongoose";
 

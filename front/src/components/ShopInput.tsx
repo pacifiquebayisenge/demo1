@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 5,
-    marginTop: 110,
   },
   input: {
     backgroundColor: 'white',

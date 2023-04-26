@@ -2,8 +2,9 @@ import { gql } from "apollo-server-core";
 
 const Schema = gql`
   type Fruit {
+    id: String
     name: String
-    price: Int
+    price: String
   }
 
   type Cart {
@@ -13,7 +14,7 @@ const Schema = gql`
 
   input FruitInput {
     name: String
-    price: Int
+    price: String
   }
 
   input CartInput {

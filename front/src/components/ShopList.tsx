@@ -1,55 +1,41 @@
-import React, {useState} from 'react';
-import {View, StyleSheet, Text, ScrollView, FlatList} from 'react-native';
+import React from 'react';
+import {View, StyleSheet, FlatList} from 'react-native';
+import Card from './Card';
+import {useQuery} from '@tanstack/react-query';
+import {getFruits} from '../api';
 
 function ShopList() {
-  const [people, setPeople] = useState([
-    {name: 'Mario', key: '1'},
-    {name: 'Luigi', key: '2'},
-    {name: 'Toad', key: '3'},
-    {name: 'Mario 2', key: '4'},
-    {name: 'Luigi 2', key: '5'},
-    {name: 'Toad 2', key: '6'},
-    {name: 'Mario 3', key: '7'},
-    {name: 'Luigi 3', key: '8'},
-    {name: 'Toad 3', key: '9'},
-  ]);
+  const {
+    status,
+    error,
+    data: fruits,
+  } = useQuery({queryKey: ['fruits'], queryFn: getFruits});
+
+  if (status === 'loading') console.log('<=', 'loading...');
+  if (status === 'error') console.log('=>', JSON.stringify(error));
+
+  // lastFruit = fruits[fruits.legnth - 1];
+  let a = [];
+  a = fruits;
+  console.log(a[0]);
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={people}
-        renderItem={({item}) => <Text style={styles.item}>{item.name}</Text>}
+        data={fruits}
+        keyExtractor={item => item.id}
+        renderItem={({item}) => {
+          return <Card cardKey={item.id} last={false} item={item} />;
+        }}
       />
-
-      {/* <ScrollView>
-        {people.map(item => {
-          return (
-            <View key={item.key}>
-              <Text style={styles.item}>{item.name}</Text>
-            </View>
-          );
-        })}
-      </ScrollView> */}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     margin: 10,
-    marginBottom: 100,
-  },
-  item: {
-    marginVertical: 5,
-    padding: 15,
-    backgroundColor: 'lightblue',
-    fontSize: 24,
-    shadowColor: '#000',
-    shadowOffset: {width: 50, height: 10},
-    shadowOpacity: 0.8,
-    shadowRadius: 10,
-    elevation: 5,
-    borderRadius: 10,
   },
 });
 

@@ -1,50 +1,58 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
-const Card = ({item}: any) => {
+const Card = ({item, last}: any) => {
+  const getId = (id: string) => {
+    let e = Number.parseFloat(id);
+
+    console.log('#####', (e + 5).toFixed(2));
+  };
   return (
-    <View style={styles.container}>
-      <View style={styles.flightDetails}>
-        <Text style={styles.flightDetailsText}>{item.flightName}</Text>
-        <Text style={styles.flightDetailsText}>{item.scheduleDate}</Text>
-        <Text style={styles.flightDetailsText}>{item.scheduleTime}</Text>
+    <TouchableOpacity onPress={() => getId(item.price)}>
+      <View style={[styles.container, last ? styles.lastItem : {}]}>
+        <View style={styles.image}></View>
+        <View style={styles.content}>
+          <Text style={styles.text}>{item.name}</Text>
+          <Text style={styles.text}>{item.price}</Text>
+        </View>
+        <View style={styles.action}></View>
       </View>
-
-      <View style={styles.row2}>
-        <Text>Amsterdam</Text>
-        <Text>Destination</Text>
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1 / 2,
+    marginVertical: 5,
+    marginHorizontal: 5,
+    padding: 15,
     backgroundColor: 'lightblue',
-    flexDirection: 'column',
-    padding: 10,
-    margin: 10,
-    borderRadius: 10,
+    fontSize: 24,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 1},
+    shadowOffset: {width: 50, height: 10},
     shadowOpacity: 0.8,
-    shadowRadius: 2,
+    shadowRadius: 10,
     elevation: 5,
-  },
-  flightDetails: {
+    borderRadius: 10,
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 20,
+    alignItems: 'center',
+    gap: 20,
   },
-  flightDetailsText: {
-    fontSize: 10,
-    color: 'gray',
-    fontWeight: 'bold',
+  lastItem: {
+    marginBottom: 80,
   },
-  row2: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+  image: {
+    borderRadius: 5,
+    backgroundColor: 'red',
+    width: 50,
+    height: 50,
   },
+  content: {},
+  text: {
+    fontSize: 20,
+  },
+  action: {},
 });
 
 export default Card;
