@@ -1,20 +1,35 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
-const Card = ({item, last}: any) => {
-  const getId = (id: string) => {
-    let e = Number.parseFloat(id);
+import {useMutation} from '@tanstack/react-query';
+import {addFruit} from '../api';
+import {getFruitImage} from '../shared/fruitImageComponent';
 
-    console.log('#####', (e + 5).toFixed(2));
+const Card = ({item, isLast, backgroundColor}: any) => {
+  const getId = (id: string, amount: number) => {
+    mutation.mutate({id, amount});
   };
+
+  const mutation: any = useMutation({
+    mutationFn: addFruit,
+  });
+
   return (
-    <TouchableOpacity onPress={() => getId(item.price)}>
-      <View style={[styles.container, last ? styles.lastItem : {}]}>
-        <View style={styles.image}></View>
+    <TouchableOpacity onPress={() => getId(item.id, 5)}>
+      <View style={[styles.container, isLast ? styles.lastItem : {}]}>
+        {getFruitImage(item.name, backgroundColor)}
+
         <View style={styles.content}>
-          <Text style={styles.text}>{item.name}</Text>
-          <Text style={styles.text}>{item.price}</Text>
+          <Text style={styles.title}>{item.name}</Text>
+
+          <View style={styles.priceContainer}>
+            <Text style={styles.logo}>€</Text>
+            <Text style={styles.price}>
+              {Number.parseFloat(item.price).toFixed(2)}
+            </Text>
+          </View>
         </View>
+
         <View style={styles.action}></View>
       </View>
     </TouchableOpacity>
@@ -23,11 +38,11 @@ const Card = ({item, last}: any) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1 / 2,
-    marginVertical: 5,
-    marginHorizontal: 5,
+    flex: 1,
+    width: 175,
+    margin: 5,
     padding: 15,
-    backgroundColor: 'lightblue',
+    backgroundColor: 'white',
     fontSize: 24,
     shadowColor: '#000',
     shadowOffset: {width: 50, height: 10},
@@ -35,22 +50,58 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 5,
     borderRadius: 10,
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: 20,
   },
   lastItem: {
     marginBottom: 80,
   },
+  imageContainer: {
+    borderRadius: 50,
+    backgroundColor: '#f4dfd0',
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  imageContainer2: {
+    borderRadius: 50,
+    backgroundColor: '#f4dfd0',
+    width: 40,
+    height: 40,
+    borderColor: 'white',
+    borderWidth: 1,
+  },
   image: {
-    borderRadius: 5,
-    backgroundColor: 'red',
     width: 50,
     height: 50,
   },
-  content: {},
-  text: {
+  content: {
+    justifyContent: 'center',
+  },
+  title: {
     fontSize: 20,
+    fontWeight: 'bold',
+    color: 'grey',
+  },
+  priceContainer: {
+    justifyContent: 'center',
+    flexDirection: 'row',
+    gap: 5,
+  },
+  logo: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#353d64',
+  },
+
+  price: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#353d64',
   },
   action: {},
 });

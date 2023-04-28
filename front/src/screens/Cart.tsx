@@ -1,11 +1,11 @@
 import React from 'react';
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
+import CartList from '../components/CartList';
 
-function CartScreen({navigation}: any) {
+function CartScreen() {
   return (
     <View style={styles.container}>
-      <Text>Cart!</Text>
-      <Button title="Go to Home" onPress={() => navigation.navigate('Home')} />
+      <CartList />
     </View>
   );
 }
@@ -13,8 +13,6 @@ function CartScreen({navigation}: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
-    alignItems: 'center',
     justifyContent: 'center',
   },
 });

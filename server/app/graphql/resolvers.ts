@@ -3,8 +3,8 @@ import Cart from "../models/cart.model";
 
 const Resolvers = {
   Query: {
-    async fruit(_: any, { ID }: any) {
-      return await Fruit.findById(ID);
+    async fruit(_: any, { id }: any) {
+      return await Fruit.findById(id);
     },
 
     async getFruits() {
@@ -29,22 +29,22 @@ const Resolvers = {
       return res;
     },
 
-    async deleteFruit(_: any, { ID }: any) {
+    async deleteFruit(_: any, { id }: any) {
       // 1 if something was deleted, 0 if not
-      const wasDeleted = (await Fruit.deleteOne({ _id: ID })).deletedCount;
+      const wasDeleted = (await Fruit.deleteOne({ _id: id })).deletedCount;
       return wasDeleted;
     },
 
-    async editFruit(_: any, { ID, fruitInput: { name, price } }: any) {
+    async editFruit(_: any, { id, fruitInput: { name, price } }: any) {
       // 1 if something was edited, 0 if not
-      const wasEdited = (await Fruit.updateOne({ _id: ID }, { name, price }))
+      const wasEdited = (await Fruit.updateOne({ _id: id }, { name, price }))
         .modifiedCount;
       return wasEdited;
     },
 
-    async addFruit(_: any, { cartInput: { ID, amount } }: any) {
+    async addFruit(_: any, { cartInput: { id, amount } }: any) {
       const newCartItem = new Cart({
-        ID,
+        id,
         amount,
       });
 
@@ -53,15 +53,15 @@ const Resolvers = {
       return res;
     },
 
-    async removeFruit(_: any, { cartInput: { ID } }: any) {
+    async removeFruit(_: any, { cartInput: { id } }: any) {
       // 1 if something was deleted, 0 if not
-      const wasDeleted = (await Cart.deleteOne({ _id: ID })).deletedCount;
+      const wasDeleted = (await Cart.deleteOne({ _id: id })).deletedCount;
       return wasDeleted;
     },
 
-    async updateFruit(_: any, { ID, cartInput: { amount } }: any) {
+    async updateFruit(_: any, { id, cartInput: { amount } }: any) {
       // 1 if something was edited, 0 if not
-      const wasEdited = (await Cart.updateOne({ _id: ID }, { amount }))
+      const wasEdited = (await Cart.updateOne({ _id: id }, { amount }))
         .modifiedCount;
       return wasEdited;
     },
