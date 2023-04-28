@@ -1,19 +1,36 @@
 import React from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 
-export const getFruitImage = (fruitName: string, backgroundColor: string) => {
+export const getFruitImage = (
+  fruitName: string,
+  backgroundColor: string,
+  isDetailPage: boolean,
+) => {
   switch (fruitName) {
     case 'Banana':
       return (
-        <View style={imageContainerStyles(backgroundColor).imageContainer}>
+        <View
+          style={[
+            styles(backgroundColor).imageContainer,
+            isDetailPage ? detailStyles.imageContainer : {},
+          ]}>
           <View
-            style={imageContainerStyles(backgroundColor).imageInnerContainer}>
+            style={[
+              styles(backgroundColor).imageInnerContainer,
+              isDetailPage ? detailStyles.imageInnerContainer : {},
+            ]}>
             <Image
-              style={styles.image}
+              style={[
+                styles(backgroundColor).image,
+                isDetailPage ? detailStyles.image : {},
+              ]}
               source={require('../../assets/img/Banana.png')}
             />
             <Image
-              style={styles.imageShadow}
+              style={[
+                styles(backgroundColor).imageShadow,
+                isDetailPage ? detailStyles.imageShadow : {},
+              ]}
               source={require('../../assets/img/Banana.png')}
             />
           </View>
@@ -21,15 +38,28 @@ export const getFruitImage = (fruitName: string, backgroundColor: string) => {
       );
     case 'Kiwi':
       return (
-        <View style={imageContainerStyles(backgroundColor).imageContainer}>
+        <View
+          style={[
+            styles(backgroundColor).imageContainer,
+            isDetailPage ? detailStyles.imageContainer : {},
+          ]}>
           <View
-            style={imageContainerStyles(backgroundColor).imageInnerContainer}>
+            style={[
+              styles(backgroundColor).imageInnerContainer,
+              isDetailPage ? detailStyles.imageInnerContainer : {},
+            ]}>
             <Image
-              style={styles.image}
+              style={[
+                styles(backgroundColor).image,
+                isDetailPage ? detailStyles.image : {},
+              ]}
               source={require('../../assets/img/Kiwi.png')}
             />
             <Image
-              style={styles.imageShadow}
+              style={[
+                styles(backgroundColor).imageShadow,
+                isDetailPage ? detailStyles.imageShadow : {},
+              ]}
               source={require('../../assets/img/Kiwi.png')}
             />
           </View>
@@ -37,15 +67,28 @@ export const getFruitImage = (fruitName: string, backgroundColor: string) => {
       );
     case 'Lemon':
       return (
-        <View style={imageContainerStyles(backgroundColor).imageContainer}>
+        <View
+          style={[
+            styles(backgroundColor).imageContainer,
+            isDetailPage ? detailStyles.imageContainer : {},
+          ]}>
           <View
-            style={imageContainerStyles(backgroundColor).imageInnerContainer}>
+            style={[
+              styles(backgroundColor).imageInnerContainer,
+              isDetailPage ? detailStyles.imageInnerContainer : {},
+            ]}>
             <Image
-              style={styles.image}
+              style={[
+                styles(backgroundColor).image,
+                isDetailPage ? detailStyles.image : {},
+              ]}
               source={require('../../assets/img/Lemon.png')}
             />
             <Image
-              style={styles.imageShadow}
+              style={[
+                styles(backgroundColor).imageShadow,
+                isDetailPage ? detailStyles.imageShadow : {},
+              ]}
               source={require('../../assets/img/Lemon.png')}
             />
           </View>
@@ -53,15 +96,28 @@ export const getFruitImage = (fruitName: string, backgroundColor: string) => {
       );
     case 'Mango':
       return (
-        <View style={imageContainerStyles(backgroundColor).imageContainer}>
+        <View
+          style={[
+            styles(backgroundColor).imageContainer,
+            isDetailPage ? detailStyles.imageContainer : {},
+          ]}>
           <View
-            style={imageContainerStyles(backgroundColor).imageInnerContainer}>
+            style={[
+              styles(backgroundColor).imageInnerContainer,
+              isDetailPage ? detailStyles.imageInnerContainer : {},
+            ]}>
             <Image
-              style={styles.image}
+              style={[
+                styles(backgroundColor).image,
+                isDetailPage ? detailStyles.image : {},
+              ]}
               source={require('../../assets/img/Mango.png')}
             />
             <Image
-              style={styles.imageShadow}
+              style={[
+                styles(backgroundColor).imageShadow,
+                isDetailPage ? detailStyles.imageShadow : {},
+              ]}
               source={require('../../assets/img/Mango.png')}
             />
           </View>
@@ -69,15 +125,28 @@ export const getFruitImage = (fruitName: string, backgroundColor: string) => {
       );
     case 'Orange':
       return (
-        <View style={imageContainerStyles(backgroundColor).imageContainer}>
+        <View
+          style={[
+            styles(backgroundColor).imageContainer,
+            isDetailPage ? detailStyles.imageContainer : {},
+          ]}>
           <View
-            style={imageContainerStyles(backgroundColor).imageInnerContainer}>
+            style={[
+              styles(backgroundColor).imageInnerContainer,
+              isDetailPage ? detailStyles.imageInnerContainer : {},
+            ]}>
             <Image
-              style={styles.image}
+              style={[
+                styles(backgroundColor).image,
+                isDetailPage ? detailStyles.image : {},
+              ]}
               source={require('../../assets/img/Orange.png')}
             />
             <Image
-              style={styles.imageShadow}
+              style={[
+                styles(backgroundColor).imageShadow,
+                isDetailPage ? detailStyles.imageShadow : {},
+              ]}
               source={require('../../assets/img/Orange.png')}
             />
           </View>
@@ -85,15 +154,28 @@ export const getFruitImage = (fruitName: string, backgroundColor: string) => {
       );
     case 'Pineapple':
       return (
-        <View style={imageContainerStyles(backgroundColor).imageContainer}>
+        <View
+          style={[
+            styles(backgroundColor).imageContainer,
+            isDetailPage ? detailStyles.imageContainer : {},
+          ]}>
           <View
-            style={imageContainerStyles(backgroundColor).imageInnerContainer}>
+            style={[
+              styles(backgroundColor).imageInnerContainer,
+              isDetailPage ? detailStyles.imageInnerContainer : {},
+            ]}>
             <Image
-              style={styles.image}
+              style={[
+                styles(backgroundColor).image,
+                isDetailPage ? detailStyles.image : {},
+              ]}
               source={require('../../assets/img/Pineapple.png')}
             />
             <Image
-              style={styles.imageShadow}
+              style={[
+                styles(backgroundColor).imageShadow,
+                isDetailPage ? detailStyles.imageShadow : {},
+              ]}
               source={require('../../assets/img/Pineapple.png')}
             />
           </View>
@@ -101,15 +183,28 @@ export const getFruitImage = (fruitName: string, backgroundColor: string) => {
       );
     case 'Raspberry':
       return (
-        <View style={imageContainerStyles(backgroundColor).imageContainer}>
+        <View
+          style={[
+            styles(backgroundColor).imageContainer,
+            isDetailPage ? detailStyles.imageContainer : {},
+          ]}>
           <View
-            style={imageContainerStyles(backgroundColor).imageInnerContainer}>
+            style={[
+              styles(backgroundColor).imageInnerContainer,
+              isDetailPage ? detailStyles.imageInnerContainer : {},
+            ]}>
             <Image
-              style={styles.image}
+              style={[
+                styles(backgroundColor).image,
+                isDetailPage ? detailStyles.image : {},
+              ]}
               source={require('../../assets/img/Raspberry.png')}
             />
             <Image
-              style={styles.imageShadow}
+              style={[
+                styles(backgroundColor).imageShadow,
+                isDetailPage ? detailStyles.imageShadow : {},
+              ]}
               source={require('../../assets/img/Raspberry.png')}
             />
           </View>
@@ -117,15 +212,28 @@ export const getFruitImage = (fruitName: string, backgroundColor: string) => {
       );
     case 'Strawberry':
       return (
-        <View style={imageContainerStyles(backgroundColor).imageContainer}>
+        <View
+          style={[
+            styles(backgroundColor).imageContainer,
+            isDetailPage ? detailStyles.imageContainer : {},
+          ]}>
           <View
-            style={imageContainerStyles(backgroundColor).imageInnerContainer}>
+            style={[
+              styles(backgroundColor).imageInnerContainer,
+              isDetailPage ? detailStyles.imageInnerContainer : {},
+            ]}>
             <Image
-              style={styles.image}
+              style={[
+                styles(backgroundColor).image,
+                isDetailPage ? detailStyles.image : {},
+              ]}
               source={require('../../assets/img/Strawberry.png')}
             />
             <Image
-              style={styles.imageShadow}
+              style={[
+                styles(backgroundColor).imageShadow,
+                isDetailPage ? detailStyles.imageShadow : {},
+              ]}
               source={require('../../assets/img/Strawberry.png')}
             />
           </View>
@@ -133,15 +241,28 @@ export const getFruitImage = (fruitName: string, backgroundColor: string) => {
       );
     case 'Watermelon':
       return (
-        <View style={imageContainerStyles(backgroundColor).imageContainer}>
+        <View
+          style={[
+            styles(backgroundColor).imageContainer,
+            isDetailPage ? detailStyles.imageContainer : {},
+          ]}>
           <View
-            style={imageContainerStyles(backgroundColor).imageInnerContainer}>
+            style={[
+              styles(backgroundColor).imageInnerContainer,
+              isDetailPage ? detailStyles.imageInnerContainer : {},
+            ]}>
             <Image
-              style={styles.image}
+              style={[
+                styles(backgroundColor).image,
+                isDetailPage ? detailStyles.image : {},
+              ]}
               source={require('../../assets/img/Watermelon.png')}
             />
             <Image
-              style={styles.imageShadow}
+              style={[
+                styles(backgroundColor).imageShadow,
+                isDetailPage ? detailStyles.imageShadow : {},
+              ]}
               source={require('../../assets/img/Watermelon.png')}
             />
           </View>
@@ -150,32 +271,29 @@ export const getFruitImage = (fruitName: string, backgroundColor: string) => {
   }
 };
 
-const styles = StyleSheet.create({
-  image: {
-    resizeMode: 'contain',
-    width: 70,
-    height: 70,
-    shadowColor: '#000',
-    shadowOffset: {width: 50, height: 10},
-    shadowOpacity: 0.8,
-    shadowRadius: 10,
-    borderRadius: 15,
-  },
-  imageShadow: {
-    resizeMode: 'contain',
-    width: 70,
-    height: 70,
-    position: 'absolute',
-    left: -3.5,
-    top: -3.5,
-    zIndex: -1,
-    tintColor: 'black',
-    opacity: 0.4,
-  },
-});
-
-const imageContainerStyles = (imageContainerColor: string) =>
+const styles = (imageContainerColor: string) =>
   StyleSheet.create({
+    image: {
+      resizeMode: 'contain',
+      width: 70,
+      height: 70,
+      shadowColor: '#000',
+      shadowOffset: {width: 50, height: 10},
+      shadowOpacity: 0.8,
+      shadowRadius: 10,
+      borderRadius: 15,
+    },
+    imageShadow: {
+      resizeMode: 'contain',
+      width: 70,
+      height: 70,
+      position: 'absolute',
+      left: -3.5,
+      top: -3.5,
+      zIndex: -1,
+      tintColor: 'black',
+      opacity: 0.4,
+    },
     imageContainer: {
       borderRadius: 50,
       backgroundColor: imageContainerColor,
@@ -196,3 +314,26 @@ const imageContainerStyles = (imageContainerColor: string) =>
       alignItems: 'center',
     },
   });
+
+const detailStyles = StyleSheet.create({
+  image: {
+    width: 150,
+    height: 150,
+  },
+  imageShadow: {
+    width: 150,
+    height: 150,
+    left: -7,
+    top: -5,
+  },
+  imageContainer: {
+    width: 150,
+    height: 150,
+    borderRadius: 100,
+  },
+  imageInnerContainer: {
+    width: 130,
+    height: 130,
+    borderRadius: 100,
+  },
+});

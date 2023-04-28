@@ -1,23 +1,22 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
 import {useMutation} from '@tanstack/react-query';
 import {addFruit} from '../api';
 import {getFruitImage} from '../shared/fruitImageComponent';
+import CustomModal from '../shared/modal';
 
 const Card = ({item, isLast, backgroundColor}: any) => {
-  const getId = (id: string, amount: number) => {
-    mutation.mutate({id, amount});
-  };
+  const [modalVisible, setModalVisible] = useState(false);
 
   const mutation: any = useMutation({
     mutationFn: addFruit,
   });
 
   return (
-    <TouchableOpacity onPress={() => getId(item.id, 5)}>
+    <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
       <View style={[styles.container, isLast ? styles.lastItem : {}]}>
-        {getFruitImage(item.name, backgroundColor)}
+        {getFruitImage(item.name, backgroundColor, false)}
 
         <View style={styles.content}>
           <Text style={styles.title}>{item.name}</Text>
@@ -31,6 +30,13 @@ const Card = ({item, isLast, backgroundColor}: any) => {
         </View>
 
         <View style={styles.action}></View>
+
+        <CustomModal
+          visible={modalVisible}
+          fruit={item}
+          backgroundColor={backgroundColor}
+          fn={() => setModalVisible(!modalVisible)}
+        />
       </View>
     </TouchableOpacity>
   );

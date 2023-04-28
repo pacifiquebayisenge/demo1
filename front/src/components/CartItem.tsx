@@ -27,7 +27,7 @@ const CartItem = ({item, isLast, backgroundColor}: any) => {
     return (
       <View style={[styles.container, isLast ? styles.lastItem : {}]}>
         <View style={styles.left}>
-          {getFruitImage(fruit.name, backgroundColor)}
+          {getFruitImage(fruit.name, backgroundColor, false)}
 
           <View style={styles.content}>
             <Text style={styles.title}>{fruit.name}</Text>
