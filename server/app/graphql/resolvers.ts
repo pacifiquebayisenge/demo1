@@ -48,9 +48,18 @@ const Resolvers = {
         amount,
       });
 
-      const res = await newCartItem.save();
+      const myCart = await Cart.find();
 
-      return res;
+      if (myCart.find((e: any) => e.id === id)) {
+        // update existing fruit
+
+        return await this.updateFruit(null, {
+          id,
+          cartUpdateInput: { amount },
+        });
+      }
+
+      return await newCartItem.save();
     },
 
     async removeFruit(_: any, { cartInput: { id } }: any) {
@@ -59,9 +68,9 @@ const Resolvers = {
       return wasDeleted;
     },
 
-    async updateFruit(_: any, { id, cartInput: { amount } }: any) {
+    async updateFruit(_: any, { id, cartUpdateInput: { amount } }: any) {
       // 1 if something was edited, 0 if not
-      const wasEdited = (await Cart.updateOne({ _id: id }, { amount }))
+      const wasEdited = (await Cart.updateOne({ id: id }, { amount }))
         .modifiedCount;
       return wasEdited;
     },

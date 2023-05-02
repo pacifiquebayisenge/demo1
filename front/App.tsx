@@ -15,7 +15,7 @@ import CartScreen from './src/screens/Cart';
 
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 function App(): JSX.Element {
   const Tab = createBottomTabNavigator();

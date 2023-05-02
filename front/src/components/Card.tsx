@@ -1,17 +1,11 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
-import {useMutation} from '@tanstack/react-query';
-import {addFruit} from '../api';
 import {getFruitImage} from '../shared/fruitImageComponent';
 import CustomModal from '../shared/modal';
 
 const Card = ({item, isLast, backgroundColor}: any) => {
   const [modalVisible, setModalVisible] = useState(false);
-
-  const mutation: any = useMutation({
-    mutationFn: addFruit,
-  });
 
   return (
     <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>

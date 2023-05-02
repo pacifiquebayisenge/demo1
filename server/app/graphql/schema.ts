@@ -22,6 +22,10 @@ const Schema = gql`
     amount: Int
   }
 
+  input CartUpdateInput {
+    amount: Int
+  }
+
   type Query {
     fruit(id: ID!): Fruit!
     getFruits: [Fruit]
@@ -35,7 +39,7 @@ const Schema = gql`
 
     addFruit(cartInput: CartInput): Cart
     removeFruit(cartInput: CartInput): Boolean
-    updateFruit(id: ID!, cartInput: CartInput): Boolean
+    updateFruit(id: ID!, cartUpdateInput: CartUpdateInput): Boolean
   }
 `;
 

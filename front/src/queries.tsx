@@ -13,8 +13,8 @@ export const GET_ALL_FRUITS = gql`
 `;
 
 export const GET_FRUIT = gql`
-  query Fruit($id: ID!) {
-    fruit(id: $id) {
+  query Query($fruitId: ID!) {
+    fruit(id: $fruitId) {
       id
       name
       price
@@ -37,5 +37,11 @@ export const ADD_FRUIT = gql`
       id
       amount
     }
+  }
+`;
+
+export const UPDATE_FRUIT = gql`
+  mutation Mutation($updateFruitId: ID!, $cartUpdateInput: CartUpdateInput) {
+    updateFruit(id: $updateFruitId, cartUpdateInput: $cartUpdateInput)
   }
 `;

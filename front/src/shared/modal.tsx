@@ -1,30 +1,28 @@
 import React, {useState} from 'react';
 
-import {
-  View,
-  Text,
-  StyleSheet,
-  Modal,
-  Alert,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, StyleSheet, Modal, TouchableOpacity} from 'react-native';
 import {getFruitImage} from './fruitImageComponent';
+import {Float} from 'react-native/Libraries/Types/CodegenTypes';
+import {useMutation} from '@tanstack/react-query';
+import {addFruit} from '../api';
 
 const CustomModal = ({visible, fn, fruit, backgroundColor}: any) => {
-  const [amount, setAmount] = useState(1);
+  let [amount, setAmount] = useState(1);
 
-  const [price, setPrice] = useState(
+  const [price, setPrice] = useState<Float>(
     Number.parseFloat(Number.parseFloat(fruit.price).toFixed(2)),
   );
 
+  const addMutation: any = useMutation({
+    mutationFn: addFruit,
+  });
+
+  const fruitToCart = (fruitId: string) => {
+    addMutation.mutate({fruitId, amount});
+  };
+
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={visible}
-      onRequestClose={() => {
-        Alert.alert('Modal has been closed.');
-      }}>
+    <Modal animationType="slide" transparent={true} visible={visible}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <View style={styles.container}>
@@ -44,13 +42,11 @@ const CustomModal = ({visible, fn, fruit, backgroundColor}: any) => {
                   onPress={() => {
                     if (amount === 1) return;
 
-                    setAmount(amount - 1);
+                    setAmount((amount -= 1));
                     setPrice(
                       Number.parseFloat(
                         Number.parseFloat(fruit.price).toFixed(2),
-                      ) *
-                        amount -
-                        1,
+                      ) * amount,
                     );
                   }}>
                   <Text style={styles.btnText}>-</Text>
@@ -61,15 +57,12 @@ const CustomModal = ({visible, fn, fruit, backgroundColor}: any) => {
                 <TouchableOpacity
                   style={styles.btn}
                   onPress={() => {
-                    setAmount(amount + 1);
+                    setAmount((amount += 1));
                     setPrice(
                       Number.parseFloat(
                         Number.parseFloat(fruit.price).toFixed(2),
-                      ) *
-                        amount +
-                        1,
+                      ) * amount,
                     );
-                    console.log(price);
                   }}>
                   <Text style={styles.btnText}>+</Text>
                 </TouchableOpacity>
@@ -80,13 +73,26 @@ const CustomModal = ({visible, fn, fruit, backgroundColor}: any) => {
           <View style={styles.modalAction}>
             <TouchableOpacity
               style={[styles.modalBtn, styles.buttonClose]}
-              onPress={() => fn()}>
+              onPress={() => {
+                setAmount(1);
+                setPrice(
+                  Number.parseFloat(Number.parseFloat(fruit.price).toFixed(2)),
+                );
+                fn();
+              }}>
               <Text style={styles.textStyle}>Cancel</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[styles.modalBtn, styles.buttonAdd]}
-              onPress={() => fn()}>
+              onPress={() => {
+                fruitToCart(fruit.id);
+                setAmount(1);
+                setPrice(
+                  Number.parseFloat(Number.parseFloat(fruit.price).toFixed(2)),
+                );
+                fn();
+              }}>
               <Text style={styles.textStyle}>Add</Text>
             </TouchableOpacity>
           </View>

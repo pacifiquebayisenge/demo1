@@ -1,8 +1,9 @@
 import {useQuery} from '@tanstack/react-query';
-import React from 'react';
-import {View, Text, StyleSheet, FlatList} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, StyleSheet, FlatList, RefreshControl} from 'react-native';
 import {getCart} from '../api';
 import CartItem from './CartItem';
+import {queryClient} from '../../App';
 
 const CartList = () => {
   const {
@@ -10,6 +11,16 @@ const CartList = () => {
     error,
     data: cartFruits,
   } = useQuery({queryKey: ['cartFruits'], queryFn: getCart});
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    queryClient.refetchQueries(['cartFruits']);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  };
 
   // eslint-disable-next-line curly
   if (status === 'error') console.log('=>', JSON.stringify(error));
@@ -51,6 +62,9 @@ const CartList = () => {
   return (
     <View style={styles.container}>
       <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         data={cartFruits}
         keyExtractor={item => item.id}
         renderItem={({item, index}) => {
