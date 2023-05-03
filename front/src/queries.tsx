@@ -22,6 +22,15 @@ export const GET_FRUIT = gql`
   }
 `;
 
+export const GET_CART_FRUIT = gql`
+  query CartFruit($cartFruitId: ID!) {
+    cartFruit(id: $cartFruitId) {
+      amount
+      id
+    }
+  }
+`;
+
 export const GET_ALL_CART_FRUITS = gql`
   query Query {
     getCart {
@@ -43,5 +52,11 @@ export const ADD_FRUIT = gql`
 export const UPDATE_FRUIT = gql`
   mutation Mutation($updateFruitId: ID!, $cartUpdateInput: CartUpdateInput) {
     updateFruit(id: $updateFruitId, cartUpdateInput: $cartUpdateInput)
+  }
+`;
+
+export const REMOVE_FRUIT = gql`
+  mutation RemoveFruit($cartInput: CartInput) {
+    removeFruit(cartInput: $cartInput)
   }
 `;

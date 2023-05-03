@@ -28,6 +28,7 @@ const Schema = gql`
 
   type Query {
     fruit(id: ID!): Fruit!
+    cartFruit(id: ID!): [Cart]
     getFruits: [Fruit]
     getCart: [Cart]
   }

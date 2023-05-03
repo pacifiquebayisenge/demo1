@@ -7,6 +7,10 @@ const Resolvers = {
       return await Fruit.findById(id);
     },
 
+    async cartFruit(_: any, { id }: any) {
+      return await Cart.find().where("id").equals(id);
+    },
+
     async getFruits() {
       return await Fruit.find();
     },
@@ -64,7 +68,8 @@ const Resolvers = {
 
     async removeFruit(_: any, { cartInput: { id } }: any) {
       // 1 if something was deleted, 0 if not
-      const wasDeleted = (await Cart.deleteOne({ _id: id })).deletedCount;
+
+      const wasDeleted = (await Cart.deleteOne({ id: id })).deletedCount;
       return wasDeleted;
     },
 

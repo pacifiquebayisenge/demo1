@@ -5,6 +5,8 @@ import {
   GET_FRUIT,
   ADD_FRUIT,
   UPDATE_FRUIT,
+  GET_CART_FRUIT,
+  REMOVE_FRUIT,
 } from './queries';
 
 const API_URL = 'http://10.0.2.2:4001/graphql';
@@ -20,10 +22,19 @@ export const getFruits = async () => {
 };
 
 export const getFruitById = async (fruitId: string) => {
-  console.log(fruitId);
   return await request(API_URL, GET_FRUIT, {fruitId})
     .then((data): any => {
       return data.fruit;
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+export const getCartFruitById = async (fruitId: string) => {
+  return await request(API_URL, GET_CART_FRUIT, {fruitId})
+    .then((data): any => {
+      return data.cartFruit;
     })
     .catch(err => {
       console.log(err);
@@ -63,5 +74,17 @@ export const updateFruit = async ({fruitId, amount}: any) => {
     })
     .catch(err => {
       console.log('rr', err);
+    });
+};
+
+export const removeFromCart = async (id: string) => {
+  return await request(API_URL, REMOVE_FRUIT, {cartInput: {id}})
+    .then((data): any => {
+      console.log('fruit deleted  ? ', data.removeFruit);
+
+      return data.removeFruit;
+    })
+    .catch(err => {
+      console.log(err);
     });
 };

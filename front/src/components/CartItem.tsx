@@ -1,9 +1,10 @@
-import React from 'react';
-import {useQuery} from '@tanstack/react-query';
+import React, {useState} from 'react';
+import {useMutation, useQuery} from '@tanstack/react-query';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 //import Icon from 'react-native-vector-icons/FontAwesome';
-import {getFruitById} from '../api';
+import {getFruitById, removeFromCart, updateFruit} from '../api';
 import {getFruitImage} from '../shared/fruitImageComponent';
+import {queryClient} from '../../App';
 
 const CartItem = ({item, isLast, backgroundColor}: any) => {
   const {
@@ -16,6 +17,27 @@ const CartItem = ({item, isLast, backgroundColor}: any) => {
     queryFn: () => getFruitById(item.id),
   });
 
+  let [amount, setAmount] = useState(item.amount);
+
+  const updateMutation: any = useMutation({
+    mutationFn: updateFruit,
+  });
+
+  const removeMutation: any = useMutation({
+    mutationFn: removeFromCart,
+  });
+
+  const updateCartFruit = (fruitId: string) => {
+    updateMutation.mutate({fruitId, amount});
+  };
+
+  const removeCartFruit = async (fruitId: string) => {
+    removeMutation.mutate(fruitId);
+  };
+
+  const refetch = async () => {
+    await queryClient.refetchQueries(['cartFruits']);
+  };
   // eslint-disable-next-line curly
   if (status === 'error') console.log('=>', JSON.stringify(error));
 
@@ -35,7 +57,7 @@ const CartItem = ({item, isLast, backgroundColor}: any) => {
             <View style={styles.priceContainer}>
               <Text style={styles.logo}>€</Text>
               <Text style={styles.price}>
-                {Number.parseFloat(fruit.price).toFixed(2)}
+                {(Number.parseFloat(fruit.price) * amount).toFixed(2)}
               </Text>
             </View>
           </View>
@@ -47,15 +69,27 @@ const CartItem = ({item, isLast, backgroundColor}: any) => {
           <View style={styles.amountAction}>
             <TouchableOpacity
               style={styles.btn}
-              onPress={() => console.log('minus')}>
+              onPress={() => {
+                if (amount == 1) {
+                  removeCartFruit(fruit.id);
+                  refetch();
+                  return;
+                } else {
+                  setAmount((amount -= 1));
+                  updateCartFruit(fruit.id);
+                }
+              }}>
               <Text style={styles.btnText}>-</Text>
             </TouchableOpacity>
 
-            <Text style={styles.text}>{item.amount}</Text>
+            <Text style={styles.text}>{amount}</Text>
 
             <TouchableOpacity
               style={styles.btn}
-              onPress={() => console.log('plus')}>
+              onPress={() => {
+                setAmount((amount += 1));
+                updateCartFruit(fruit.id);
+              }}>
               <Text style={styles.btnText}>+</Text>
             </TouchableOpacity>
           </View>
@@ -83,15 +117,19 @@ const CartItem = ({item, isLast, backgroundColor}: any) => {
         <View style={styles.amountAction}>
           <TouchableOpacity
             style={styles.btn}
-            onPress={() => console.log('minus')}>
+            onPress={() => {
+              setAmount((amount -= 1));
+            }}>
             <Text style={styles.btnText}>-</Text>
           </TouchableOpacity>
 
-          <Text style={styles.text}>{item.amount}</Text>
+          <Text style={styles.text}>{amount}</Text>
 
           <TouchableOpacity
             style={styles.btn}
-            onPress={() => console.log('plus')}>
+            onPress={() => {
+              setAmount((amount += 1));
+            }}>
             <Text style={styles.btnText}>+</Text>
           </TouchableOpacity>
         </View>
