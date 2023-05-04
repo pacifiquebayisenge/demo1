@@ -1,8 +1,9 @@
-import React from 'react';
-import {View, StyleSheet, FlatList} from 'react-native';
+import React, {useCallback} from 'react';
+import {View, StyleSheet, FlatList, ViewToken} from 'react-native';
 import Card from './Card';
 import {useQuery} from '@tanstack/react-query';
 import {getFruits} from '../api';
+import {useSharedValue} from 'react-native-reanimated';
 
 function ShopList() {
   const {
@@ -12,11 +13,22 @@ function ShopList() {
     data: fruits,
   } = useQuery({queryKey: ['fruits'], queryFn: getFruits});
 
+  const viewableItems = useSharedValue<ViewToken[]>([]);
+
+  const onViewableItemsChanged = useCallback(
+    ({viewableItems: vItems}: any) => {
+      console.log(vItems);
+      viewableItems.value = vItems;
+    },
+    [viewableItems],
+  );
+
   // eslint-disable-next-line curly
   if (status === 'loading') console.log('<=', 'loading...');
   // eslint-disable-next-line curly
   if (status === 'error') console.log('=>', JSON.stringify(error));
 
+  // eslint-disable-next-line curly
   if (isSuccess) console.log('=>', 'Fruits Data Recieved');
 
   // colors for the background of the fruits images
@@ -47,18 +59,19 @@ function ShopList() {
       <FlatList
         numColumns={2}
         data={fruits}
+        contentContainerStyle={styles.flatListStyling}
+        onViewableItemsChanged={onViewableItemsChanged}
         keyExtractor={item => item.id}
         renderItem={({item, index}) => {
           const colors = generateColors(fruits.length);
           const backgroundColor = colors[index % colors.length];
-          const isLast = index === fruits.length - 1;
 
           return (
             <Card
               cardKey={item.id}
               backgroundColor={backgroundColor}
-              isLast={isLast}
               item={item}
+              viewableItems={viewableItems}
             />
           );
         }}
@@ -72,6 +85,9 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 10,
     alignItems: 'center',
+  },
+  flatListStyling: {
+    paddingBottom: 80,
   },
   centeredView: {
     flex: 1,

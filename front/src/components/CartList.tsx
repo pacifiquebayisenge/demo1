@@ -1,9 +1,17 @@
 import {useQuery} from '@tanstack/react-query';
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, FlatList, RefreshControl} from 'react-native';
+import React, {useCallback, useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  RefreshControl,
+  ViewToken,
+} from 'react-native';
 import {getCart} from '../api';
 import CartItem from './CartItem';
 import {queryClient} from '../../App';
+import {useSharedValue} from 'react-native-reanimated';
 
 const CartList = () => {
   const {
@@ -11,6 +19,16 @@ const CartList = () => {
     error,
     data: cartFruits,
   } = useQuery({queryKey: ['cartFruits'], queryFn: getCart});
+
+  const viewableItems = useSharedValue<ViewToken[]>([]);
+
+  const onViewableItemsChanged = useCallback(
+    ({viewableItems: vItems}: any) => {
+      console.log(vItems);
+      viewableItems.value = vItems;
+    },
+    [viewableItems],
+  );
 
   const [refreshing, setRefreshing] = useState(false);
 
@@ -66,16 +84,17 @@ const CartList = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         data={cartFruits}
+        contentContainerStyle={styles.flatListStyling}
+        onViewableItemsChanged={onViewableItemsChanged}
         keyExtractor={item => item.id}
         renderItem={({item, index}) => {
           const backgroundColor = colors[index % colors.length];
-          const isLast = index === cartFruits.length - 1;
 
           return (
             <CartItem
               item={item}
-              isLast={isLast}
               backgroundColor={backgroundColor}
+              viewableItems={viewableItems}
             />
           );
         }}
@@ -88,6 +107,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     margin: 10,
+  },
+  flatListStyling: {
+    paddingBottom: 80,
   },
 });
 

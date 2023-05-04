@@ -5,8 +5,9 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {getFruitById, removeFromCart, updateFruit} from '../api';
 import {getFruitImage} from '../shared/fruitImageComponent';
 import {queryClient} from '../../App';
+import Animated, {useAnimatedStyle, withTiming} from 'react-native-reanimated';
 
-const CartItem = ({item, isLast, backgroundColor}: any) => {
+const CartItem = ({item, backgroundColor, viewableItems}: any) => {
   const {
     isSuccess,
     status,
@@ -15,6 +16,24 @@ const CartItem = ({item, isLast, backgroundColor}: any) => {
   } = useQuery({
     queryKey: ['fruit', item.id],
     queryFn: () => getFruitById(item.id),
+  });
+
+  const rStyle = useAnimatedStyle(() => {
+    console.log(viewableItems);
+    const isVisible = Boolean(
+      viewableItems.value
+        .filter((obj: any) => obj.isViewable)
+        .find((viewableItem: any) => viewableItem.item.id === item.id),
+    );
+
+    return {
+      opacity: withTiming(isVisible ? 1 : 0),
+      transform: [
+        {
+          scale: withTiming(isVisible ? 1 : 0.3),
+        },
+      ],
+    };
   });
 
   let [amount, setAmount] = useState(item.amount);
@@ -47,7 +66,7 @@ const CartItem = ({item, isLast, backgroundColor}: any) => {
 
   if (isSuccess) {
     return (
-      <View style={[styles.container, isLast ? styles.lastItem : {}]}>
+      <Animated.View style={[styles.container, rStyle]}>
         <View style={styles.left}>
           {getFruitImage(fruit.name, backgroundColor, false)}
 
@@ -94,7 +113,7 @@ const CartItem = ({item, isLast, backgroundColor}: any) => {
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </Animated.View>
     );
   }
 
@@ -154,9 +173,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     borderRadius: 15,
   },
-  lastItem: {
-    marginBottom: 80,
-  },
+
   left: {
     flexDirection: 'row',
     alignItems: 'center',

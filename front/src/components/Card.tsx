@@ -3,13 +3,31 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
 import {getFruitImage} from '../shared/fruitImageComponent';
 import CustomModal from '../shared/modal';
+import Animated, {useAnimatedStyle, withTiming} from 'react-native-reanimated';
 
-const Card = ({item, isLast, backgroundColor}: any) => {
+const Card = ({item, backgroundColor, viewableItems}: any) => {
   const [modalVisible, setModalVisible] = useState(false);
+
+  const rStyle = useAnimatedStyle(() => {
+    const isVisible = Boolean(
+      viewableItems.value
+        .filter((obj: any) => obj.isViewable)
+        .find((viewableItem: any) => viewableItem.item.id === item.id),
+    );
+
+    return {
+      opacity: withTiming(isVisible ? 1 : 0),
+      transform: [
+        {
+          scale: withTiming(isVisible ? 1 : 0.3),
+        },
+      ],
+    };
+  });
 
   return (
     <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
-      <View style={[styles.container, isLast ? styles.lastItem : {}]}>
+      <Animated.View style={[styles.container, rStyle]}>
         {getFruitImage(item.name, backgroundColor, false)}
 
         <View style={styles.content}>
@@ -31,7 +49,7 @@ const Card = ({item, isLast, backgroundColor}: any) => {
           backgroundColor={backgroundColor}
           fn={() => setModalVisible(!modalVisible)}
         />
-      </View>
+      </Animated.View>
     </TouchableOpacity>
   );
 };
@@ -55,9 +73,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 20,
   },
-  lastItem: {
-    marginBottom: 80,
-  },
+
   imageContainer: {
     borderRadius: 50,
     backgroundColor: '#f4dfd0',
