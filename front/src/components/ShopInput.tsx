@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Text, TextInput} from 'react-native';
 import {View, StyleSheet} from 'react-native';
 
-function ShopInut() {
+const ShopInut = () => {
   const [inputValue, setInputvalue] = useState('');
 
   return (
@@ -15,7 +15,7 @@ function ShopInut() {
       <Text> value : {inputValue}</Text>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

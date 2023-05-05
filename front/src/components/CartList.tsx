@@ -6,6 +6,8 @@ import CartItem from './CartItem';
 import {queryClient} from '../../App';
 import {useSharedValue} from 'react-native-reanimated';
 import {FlatList} from 'react-native-gesture-handler';
+import {LoadingComponent} from '../shared/loadingComponent';
+import {ErrorComponent} from '../shared/errorComponent';
 
 const CartList = () => {
   const {
@@ -36,16 +38,15 @@ const CartList = () => {
   };
 
   // eslint-disable-next-line curly
-  if (status === 'error') console.log('=>', JSON.stringify(error));
+  if (status === 'error') {
+    console.log('=>', JSON.stringify(error));
+    return ErrorComponent();
+  }
 
   if (status === 'loading') {
     console.log('<=', 'loading...');
 
-    return (
-      <View style={styles.container}>
-        <Text>Loading...</Text>
-      </View>
-    );
+    return LoadingComponent();
   }
 
   // colors for the background of the fruits images

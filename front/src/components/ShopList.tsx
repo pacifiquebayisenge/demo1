@@ -4,8 +4,10 @@ import Card from './Card';
 import {useQuery} from '@tanstack/react-query';
 import {getFruits} from '../api';
 import {useSharedValue} from 'react-native-reanimated';
+import {LoadingComponent} from '../shared/loadingComponent';
+import {ErrorComponent} from '../shared/errorComponent';
 
-function ShopList() {
+const ShopList = () => {
   const {
     isSuccess,
     status,
@@ -21,14 +23,6 @@ function ShopList() {
     },
     [viewableItems],
   );
-
-  // eslint-disable-next-line curly
-  if (status === 'loading') console.log('<=', 'loading...');
-  // eslint-disable-next-line curly
-  if (status === 'error') console.log('=>', JSON.stringify(error));
-
-  // eslint-disable-next-line curly
-  if (isSuccess) console.log('=>', 'Fruits Data Recieved');
 
   // colors for the background of the fruits images
   const generateColors = (length: number) => {
@@ -53,31 +47,45 @@ function ShopList() {
     return uniqueColors;
   };
 
-  return (
-    <View style={styles.container}>
-      <FlatList
-        numColumns={2}
-        data={fruits}
-        contentContainerStyle={styles.flatListStyling}
-        onViewableItemsChanged={onViewableItemsChanged}
-        keyExtractor={item => item.id}
-        renderItem={({item, index}) => {
-          const colors = generateColors(fruits.length);
-          const backgroundColor = colors[index % colors.length];
+  // eslint-disable-next-line curly
+  if (status === 'loading') {
+    console.log('<=', 'Loading');
+    return LoadingComponent();
+  }
+  // eslint-disable-next-line curly
+  if (status === 'error') console.log('=>', JSON.stringify(error));
 
-          return (
-            <Card
-              cardKey={item.id}
-              backgroundColor={backgroundColor}
-              item={item}
-              viewableItems={viewableItems}
-            />
-          );
-        }}
-      />
-    </View>
-  );
-}
+  if (isSuccess) {
+    console.log('=>', 'Fruits Data Recieved');
+
+    return (
+      <View style={styles.container}>
+        <FlatList
+          numColumns={2}
+          data={fruits}
+          contentContainerStyle={styles.flatListStyling}
+          onViewableItemsChanged={onViewableItemsChanged}
+          keyExtractor={item => item.id}
+          renderItem={({item, index}) => {
+            const colors = generateColors(fruits.length);
+            const backgroundColor = colors[index % colors.length];
+
+            return (
+              <Card
+                cardKey={item.id}
+                backgroundColor={backgroundColor}
+                item={item}
+                viewableItems={viewableItems}
+              />
+            );
+          }}
+        />
+      </View>
+    );
+  }
+
+  return ErrorComponent();
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -85,6 +93,7 @@ const styles = StyleSheet.create({
     margin: 10,
     alignItems: 'center',
   },
+  loadingStyle: {width: 300, height: 500},
   flatListStyling: {
     paddingBottom: 80,
   },
