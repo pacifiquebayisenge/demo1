@@ -17,7 +17,6 @@ function ShopList() {
 
   const onViewableItemsChanged = useCallback(
     ({viewableItems: vItems}: any) => {
-      console.log(vItems);
       viewableItems.value = vItems;
     },
     [viewableItems],

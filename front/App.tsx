@@ -19,6 +19,7 @@ export const queryClient = new QueryClient();
 
 function App(): JSX.Element {
   const Tab = createBottomTabNavigator();
+
   return (
     <QueryClientProvider client={queryClient}>
       <NavigationContainer>

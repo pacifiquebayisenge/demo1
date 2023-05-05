@@ -1,17 +1,11 @@
 import {useQuery} from '@tanstack/react-query';
-import React, {useCallback, useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  RefreshControl,
-  ViewToken,
-} from 'react-native';
+import React, {useCallback, useRef, useState} from 'react';
+import {View, Text, StyleSheet, RefreshControl, ViewToken} from 'react-native';
 import {getCart} from '../api';
 import CartItem from './CartItem';
 import {queryClient} from '../../App';
 import {useSharedValue} from 'react-native-reanimated';
+import {FlatList} from 'react-native-gesture-handler';
 
 const CartList = () => {
   const {
@@ -20,11 +14,12 @@ const CartList = () => {
     data: cartFruits,
   } = useQuery({queryKey: ['cartFruits'], queryFn: getCart});
 
+  const flatListRef = useRef(null);
+
   const viewableItems = useSharedValue<ViewToken[]>([]);
 
   const onViewableItemsChanged = useCallback(
     ({viewableItems: vItems}: any) => {
-      console.log(vItems);
       viewableItems.value = vItems;
     },
     [viewableItems],
@@ -84,6 +79,7 @@ const CartList = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         data={cartFruits}
+        ref={flatListRef}
         contentContainerStyle={styles.flatListStyling}
         onViewableItemsChanged={onViewableItemsChanged}
         keyExtractor={item => item.id}
@@ -95,6 +91,7 @@ const CartList = () => {
               item={item}
               backgroundColor={backgroundColor}
               viewableItems={viewableItems}
+              simultaneousHandlers={flatListRef}
             />
           );
         }}
