@@ -12,6 +12,16 @@ export const GET_ALL_FRUITS = gql`
   }
 `;
 
+export const GET_ALL_FRUITS_BY = gql`
+  query GetFruitsBy($fruitInput: FruitInput) {
+    getFruitsBy(fruitInput: $fruitInput) {
+      id
+      name
+      price
+    }
+  }
+`;
+
 export const GET_FRUIT = gql`
   query Query($fruitId: ID!) {
     fruit(id: $fruitId) {

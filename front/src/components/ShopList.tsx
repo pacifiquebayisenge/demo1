@@ -27,7 +27,16 @@ const ShopList = () => {
   // colors for the background of the fruits images
   const generateColors = (length: number) => {
     if (!length) return [];
-    const colors = ['#f4dfd0', '#c5e1ed', '#d0e7ce', '#f4efba', '#E0CFE8'];
+    const colors = [
+      '#f4dfd0',
+      '#c5e1ed',
+      '#d0e7ce',
+      '#f4efba',
+      '#E0CFE8',
+      '#d0f4f0',
+      '#e3f4d0',
+      '#f4d0d0',
+    ];
     const uniqueColors: string[] = [];
 
     for (let i = 0; i < length && uniqueColors.length < colors.length; i++) {

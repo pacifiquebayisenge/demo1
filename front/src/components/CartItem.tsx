@@ -128,11 +128,16 @@ const CartItem = ({
     return {opacity};
   });
 
-  const cardAnimation = useAnimatedStyle(() => {
+  const containerAnimation = useAnimatedStyle(() => {
     return {
       height: cardHeight.value,
       margin: cardMargin.value,
       padding: cardPadding.value,
+      opacity: cardOpacity.value,
+    };
+  });
+  const cardAnimation = useAnimatedStyle(() => {
+    return {
       opacity: cardOpacity.value,
     };
   });
@@ -147,69 +152,75 @@ const CartItem = ({
   if (isSuccess) {
     return (
       <GestureHandlerRootView>
-        <Animated.View style={[styles.deleteContainer, deleteIconAnimation]}>
-          <Icon
-            style={styles.deleteIcon}
-            name="trash"
-            size={30}
-            color={'#cb3837'}
-          />
-        </Animated.View>
-        <PanGestureHandler
-          simultaneousHandlers={simultaneousHandlers}
-          onGestureEvent={panGesture}>
-          <Animated.View style={swipeAnimation}>
-            <Animated.View
-              style={[styles.container, displayAnimation, cardAnimation]}>
-              <View style={styles.left}>
-                {getFruitImage(fruit.name, backgroundColor, false)}
+        <Animated.View style={cardAnimation}>
+          <Animated.View style={[styles.deleteContainer, deleteIconAnimation]}>
+            <Icon
+              style={styles.deleteIcon}
+              name="trash"
+              size={30}
+              color={'#cb3837'}
+            />
+          </Animated.View>
+          <PanGestureHandler
+            simultaneousHandlers={simultaneousHandlers}
+            onGestureEvent={panGesture}>
+            <Animated.View style={swipeAnimation}>
+              <Animated.View
+                style={[
+                  styles.container,
+                  displayAnimation,
+                  containerAnimation,
+                ]}>
+                <View style={styles.left}>
+                  {getFruitImage(fruit.name, backgroundColor, false)}
 
-                <View style={styles.content}>
-                  <Text style={styles.title}>{fruit.name}</Text>
+                  <View style={styles.content}>
+                    <Text style={styles.title}>{fruit.name}</Text>
 
-                  <View style={styles.priceContainer}>
-                    <Text style={styles.logo}>€</Text>
-                    <Text style={styles.price}>
-                      {(Number.parseFloat(fruit.price) * amount).toFixed(2)}
-                    </Text>
+                    <View style={styles.priceContainer}>
+                      <Text style={styles.logo}>€</Text>
+                      <Text style={styles.price}>
+                        {(Number.parseFloat(fruit.price) * amount).toFixed(2)}
+                      </Text>
+                    </View>
                   </View>
                 </View>
-              </View>
 
-              <View style={styles.right}>
-                {/* <Icon style={styles.closeIcon} name="close" size={20} color="gray" /> */}
+                <View style={styles.right}>
+                  {/* <Icon style={styles.closeIcon} name="close" size={20} color="gray" /> */}
 
-                <View style={styles.amountAction}>
-                  <TouchableOpacity
-                    disabled={amount == 1}
-                    style={[
-                      styles.btn,
-                      amount == 1 ? styles.dissabledStyle : {},
-                    ]}
-                    onPress={() => {
-                      if (amount == 1) return;
+                  <View style={styles.amountAction}>
+                    <TouchableOpacity
+                      disabled={amount == 1}
+                      style={[
+                        styles.btn,
+                        amount == 1 ? styles.dissabledStyle : {},
+                      ]}
+                      onPress={() => {
+                        if (amount == 1) return;
 
-                      setAmount((amount -= 1));
-                      updateCartFruit(fruit.id);
-                    }}>
-                    <Text style={styles.btnText}>-</Text>
-                  </TouchableOpacity>
+                        setAmount((amount -= 1));
+                        updateCartFruit(fruit.id);
+                      }}>
+                      <Text style={styles.btnText}>-</Text>
+                    </TouchableOpacity>
 
-                  <Text style={styles.text}>{amount}</Text>
+                    <Text style={styles.text}>{amount}</Text>
 
-                  <TouchableOpacity
-                    style={styles.btn}
-                    onPress={() => {
-                      setAmount((amount += 1));
-                      updateCartFruit(fruit.id);
-                    }}>
-                    <Text style={styles.btnText}>+</Text>
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.btn}
+                      onPress={() => {
+                        setAmount((amount += 1));
+                        updateCartFruit(fruit.id);
+                      }}>
+                      <Text style={styles.btnText}>+</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
+              </Animated.View>
             </Animated.View>
-          </Animated.View>
-        </PanGestureHandler>
+          </PanGestureHandler>
+        </Animated.View>
       </GestureHandlerRootView>
     );
   }
@@ -218,7 +229,7 @@ const CartItem = ({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-
+    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

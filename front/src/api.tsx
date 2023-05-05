@@ -7,12 +7,23 @@ import {
   UPDATE_FRUIT,
   GET_CART_FRUIT,
   REMOVE_FRUIT,
+  GET_ALL_FRUITS_BY,
 } from './queries';
 
-const API_URL = 'http://10.0.2.2:4001/graphql';
+const API_URL = 'http://10.0.2.2:4000/graphql';
 
 export const getFruits = async () => {
   return await request(API_URL, GET_ALL_FRUITS)
+    .then((data): any => {
+      return data.getFruits;
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+export const getFruitsBy = async (name: string, price: string) => {
+  return await request(API_URL, GET_ALL_FRUITS_BY, {fruitInput: {name, price}})
     .then((data): any => {
       return data.getFruits;
     })

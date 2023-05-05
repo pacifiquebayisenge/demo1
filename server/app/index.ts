@@ -41,10 +41,10 @@ async function startAppolloServer(schema: any, resolvers: any) {
   server.applyMiddleware({ app });
 
   await new Promise<void>((resolve) =>
-    httpServer.listen({ port: 4001 }, resolve)
+    httpServer.listen({ port: 4000 }, resolve)
   ); //run the server on port 4000
 
-  console.log(`Server ready at http://localhost:4001${server.graphqlPath}`);
+  console.log(`Server ready at http://localhost:4000${server.graphqlPath}`);
 }
 
 //in the end, run the server and pass in our Schema and Resolver.

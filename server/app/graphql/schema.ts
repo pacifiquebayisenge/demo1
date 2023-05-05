@@ -30,6 +30,7 @@ const Schema = gql`
     fruit(id: ID!): Fruit!
     cartFruit(id: ID!): [Cart]
     getFruits: [Fruit]
+    getFruitsBy(fruitInput: FruitInput): [Fruit]
     getCart: [Cart]
   }
 
