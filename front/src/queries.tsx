@@ -3,11 +3,11 @@
 import {gql} from 'graphql-request';
 
 export const GET_ALL_FRUITS = gql`
-  query GetFruits {
-    getFruits {
+  query GetFruits($fruitInput: FruitInput) {
+    getFruits(fruitInput: $fruitInput) {
+      id
       name
       price
-      id
     }
   }
 `;

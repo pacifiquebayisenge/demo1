@@ -11,7 +11,35 @@ const Resolvers = {
       return await Cart.find().where("id").equals(id);
     },
 
-    async getFruits() {
+    async getFruits(_: any, { fruitInput: { name, price } }: any) {
+      if (name && price) {
+        let regExp = new RegExp(name, "i");
+        const fruits = await Fruit.find({ name: regExp });
+        let myFruits: (typeof Fruit)[] = [];
+
+        fruits.forEach((f: any) => {
+          if (Number.parseFloat(f.price) <= price) myFruits.push(f);
+        });
+
+        return myFruits;
+      }
+
+      if (name) {
+        let regExp = new RegExp(name, "i");
+        return await Fruit.find({ name: regExp });
+      }
+
+      if (price) {
+        const fruits = await Fruit.find();
+        let myFruits: (typeof Fruit)[] = [];
+
+        fruits.forEach((f: any) => {
+          if (Number.parseFloat(f.price) <= price) myFruits.push(f);
+        });
+
+        return myFruits;
+      }
+
       return await Fruit.find();
     },
 

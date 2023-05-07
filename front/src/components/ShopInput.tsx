@@ -1,35 +1,39 @@
 import React, {useState} from 'react';
 import {Text, TextInput} from 'react-native';
 import {View, StyleSheet} from 'react-native';
-import {getFruitsBy} from '../api';
-import {useQuery} from '@tanstack/react-query';
 import {queryClient} from '../../App';
+import {useQuery} from '@tanstack/react-query';
+import {getFruits} from '../api';
 
 const ShopInut = () => {
+  const [inputValue, setInputvalue] = useState('');
+
   const {
+    refetch,
     isSuccess,
     status,
     error,
     data: fruits,
   } = useQuery({
-    queryKey: ['fruitsBy'],
-    queryFn: () => {
-      return getFruitsBy(inputValue, '100');
-    },
     enabled: false,
+    queryKey: ['fruits', inputValue],
+    queryFn: () => getFruits(inputValue, ''),
   });
 
-  const [inputValue, setInputvalue] = useState('');
+  // eslint-disable-next-line curly
+  if (status === 'error') {
+    console.log('=>', JSON.stringify(error));
+  }
 
   if (status === 'loading') {
-    console.log('<==', 'Loading');
+    console.log('<=', 'loading...');
   }
-  // eslint-disable-next-line curly
-  if (status === 'error') console.log('=>', JSON.stringify(error));
 
   if (isSuccess) {
-    console.log('=>', 'Fruits Data Recieved');
-    console.log('=>', fruits);
+    console.log(
+      'succes',
+      fruits.map((f: any) => f.name),
+    );
   }
 
   return (
@@ -39,7 +43,9 @@ const ShopInut = () => {
         style={styles.input}
         onChangeText={val => {
           setInputvalue(val);
-          queryClient.refetchQueries(['fruitsBy']);
+
+          console.log(fruits);
+          refetch();
         }}
       />
       <Text> value : {inputValue}</Text>

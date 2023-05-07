@@ -12,8 +12,8 @@ import {
 
 const API_URL = 'http://10.0.2.2:4000/graphql';
 
-export const getFruits = async () => {
-  return await request(API_URL, GET_ALL_FRUITS)
+export const getFruits = async (name: string, price: string) => {
+  return await request(API_URL, GET_ALL_FRUITS, {fruitInput: {name, price}})
     .then((data): any => {
       return data.getFruits;
     })

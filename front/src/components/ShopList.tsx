@@ -13,7 +13,7 @@ const ShopList = () => {
     status,
     error,
     data: fruits,
-  } = useQuery({queryKey: ['fruits'], queryFn: getFruits});
+  } = useQuery({queryKey: ['fruits'], queryFn: () => getFruits('', '')});
 
   const viewableItems = useSharedValue<ViewToken[]>([]);
 
@@ -57,12 +57,16 @@ const ShopList = () => {
   };
 
   // eslint-disable-next-line curly
+  if (status === 'error') {
+    console.log('=>', JSON.stringify(error));
+    return ErrorComponent();
+  }
+
   if (status === 'loading') {
-    console.log('<=', 'Loading');
+    console.log('<=', 'loading...');
+
     return LoadingComponent();
   }
-  // eslint-disable-next-line curly
-  if (status === 'error') console.log('=>', JSON.stringify(error));
 
   if (isSuccess) {
     console.log('=>', 'Fruits Data Recieved');
