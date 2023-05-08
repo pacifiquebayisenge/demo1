@@ -6,9 +6,11 @@ import {getFruits} from '../api';
 import ShopList from './ShopList';
 import {LoadingComponent} from '../shared/loadingComponent';
 import {ErrorComponent} from '../shared/errorComponent';
+import Slider from '@react-native-community/slider';
 
 const ShopInut = () => {
-  const [inputValue, setInputvalue] = useState('');
+  const [inputName, setinputName] = useState('');
+  const [inputPrice, setinputPrice] = useState('');
 
   const {
     refetch,
@@ -16,14 +18,9 @@ const ShopInut = () => {
     error,
     data: fruits,
   } = useQuery({
-    queryKey: ['fruits', inputValue],
-    queryFn: () => getFruits(inputValue, ''),
+    queryKey: ['fruits', inputName],
+    queryFn: () => getFruits(inputName, inputPrice),
   });
-
-  const handleTextChange = (newText: string) => {
-    setInputvalue(newText);
-    refetch();
-  };
 
   const fetchHandler = () => {
     switch (status) {
@@ -47,20 +44,49 @@ const ShopInut = () => {
     }
   };
 
+  const sliderHandler = (value: any) => {
+    console.log(value);
+    let price = value.toFixed(2);
+    setinputPrice(price);
+    refetch();
+  };
+
+  console.log(setinputPrice);
+
   return (
     <View style={styles.test}>
-      <View style={styles.container}>
+      <View style={styles.inputcontainer}>
         <TextInput
           placeholder="🔍  Search"
           autoCorrect={false}
           style={styles.input}
           onChangeText={val => {
-            let text = val;
-            console.log(text);
-            handleTextChange(text);
+            setinputName(val);
+            refetch();
           }}
         />
-        <Text> value : {inputValue}</Text>
+        <View style={styles.sliderView}>
+          <View style={styles.sliderLabel}>
+            <View style={styles.priceContainer}>
+              <Text style={styles.logo}>€</Text>
+              <Text style={styles.price}>0</Text>
+            </View>
+            <Text>{inputPrice}</Text>
+            <View style={styles.priceContainer}>
+              <Text style={styles.logo}>€</Text>
+              <Text style={styles.price}>10</Text>
+            </View>
+          </View>
+
+          <Slider
+            tapToSeek={false}
+            value={10}
+            step={0.5}
+            minimumValue={0}
+            maximumValue={10}
+            onValueChange={value => sliderHandler(value)}
+          />
+        </View>
       </View>
       {fetchHandler()}
     </View>
@@ -69,7 +95,7 @@ const ShopInut = () => {
 
 const styles = StyleSheet.create({
   test: {flex: 1, justifyContent: 'center'},
-  container: {
+  inputcontainer: {
     backgroundColor: 'lightblue',
     padding: 10,
     margin: 10,
@@ -85,6 +111,30 @@ const styles = StyleSheet.create({
     borderRadius: 10,
 
     padding: 10,
+  },
+  sliderView: {
+    marginTop: 20,
+    marginBottom: 10,
+    paddingHorizontal: 20,
+  },
+  sliderLabel: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+
+  priceContainer: {
+    flexDirection: 'row',
+    gap: 5,
+  },
+  logo: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: '#353d64',
+  },
+
+  price: {
+    fontWeight: 'bold',
+    color: '#353d64',
   },
 });
 
