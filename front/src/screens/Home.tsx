@@ -7,7 +7,6 @@ function HomeScreen() {
   return (
     <View style={styles.container}>
       <ShopInput />
-      <ShopList />
     </View>
   );
 }

@@ -1,59 +1,74 @@
 import React, {useState} from 'react';
 import {Text, TextInput} from 'react-native';
 import {View, StyleSheet} from 'react-native';
-import {queryClient} from '../../App';
 import {useQuery} from '@tanstack/react-query';
 import {getFruits} from '../api';
+import ShopList from './ShopList';
+import {LoadingComponent} from '../shared/loadingComponent';
+import {ErrorComponent} from '../shared/errorComponent';
 
 const ShopInut = () => {
   const [inputValue, setInputvalue] = useState('');
 
   const {
     refetch,
-    isSuccess,
     status,
     error,
     data: fruits,
   } = useQuery({
-    enabled: false,
     queryKey: ['fruits', inputValue],
     queryFn: () => getFruits(inputValue, ''),
   });
 
-  // eslint-disable-next-line curly
-  if (status === 'error') {
-    console.log('=>', JSON.stringify(error));
-  }
+  const handleTextChange = (newText: string) => {
+    setInputvalue(newText);
+    refetch();
+  };
 
-  if (status === 'loading') {
-    console.log('<=', 'loading...');
-  }
+  const fetchHandler = () => {
+    switch (status) {
+      case 'loading':
+        console.log('<=', 'loading...');
+        return LoadingComponent();
 
-  if (isSuccess) {
-    console.log(
-      'succes',
-      fruits.map((f: any) => f.name),
-    );
-  }
+      case 'error':
+        console.log('=>', JSON.stringify(error));
+        return ErrorComponent();
+
+      case 'success':
+        console.log(
+          'succes',
+          fruits.map((f: any) => f.name),
+        );
+        return <ShopList fruits={fruits} />;
+
+      default:
+        return LoadingComponent();
+    }
+  };
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        placeholder="🔍  Search"
-        style={styles.input}
-        onChangeText={val => {
-          setInputvalue(val);
-
-          console.log(fruits);
-          refetch();
-        }}
-      />
-      <Text> value : {inputValue}</Text>
+    <View style={styles.test}>
+      <View style={styles.container}>
+        <TextInput
+          placeholder="🔍  Search"
+          autoCorrect={false}
+          style={styles.input}
+          onChangeText={val => {
+            let text = val;
+            console.log(text);
+            handleTextChange(text);
+          }}
+        />
+        <Text> value : {inputValue}</Text>
+      </View>
+      {fetchHandler()}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  test: {flex: 1, justifyContent: 'center'},
   container: {
     backgroundColor: 'lightblue',
     padding: 10,

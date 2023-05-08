@@ -7,13 +7,13 @@ import {useSharedValue} from 'react-native-reanimated';
 import {LoadingComponent} from '../shared/loadingComponent';
 import {ErrorComponent} from '../shared/errorComponent';
 
-const ShopList = () => {
-  const {
-    isSuccess,
-    status,
-    error,
-    data: fruits,
-  } = useQuery({queryKey: ['fruits'], queryFn: () => getFruits('', '')});
+const ShopList = ({fruits}: any) => {
+  // const {
+  //   isSuccess,
+  //   status,
+  //   error,
+  //   data: fruits,
+  // } = useQuery({queryKey: ['fruits'], queryFn: () => getFruits('', '')});
 
   const viewableItems = useSharedValue<ViewToken[]>([]);
 
@@ -56,19 +56,19 @@ const ShopList = () => {
     return uniqueColors;
   };
 
-  // eslint-disable-next-line curly
-  if (status === 'error') {
-    console.log('=>', JSON.stringify(error));
-    return ErrorComponent();
-  }
+  // // eslint-disable-next-line curly
+  // if (status === 'error') {
+  //   console.log('=>', JSON.stringify(error));
+  //   return ErrorComponent();
+  // }
 
-  if (status === 'loading') {
-    console.log('<=', 'loading...');
+  // if (status === 'loading') {
+  //   console.log('<=', 'loading...');
 
-    return LoadingComponent();
-  }
+  //   return LoadingComponent();
+  // }
 
-  if (isSuccess) {
+  if (fruits) {
     console.log('=>', 'Fruits Data Recieved');
 
     return (
