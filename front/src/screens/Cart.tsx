@@ -2,10 +2,10 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import CartList from '../components/CartList';
 
-function CartScreen() {
+function CartScreen({navigation}: any) {
   return (
     <View style={styles.container}>
-      <CartList />
+      <CartList navigation={navigation} />
     </View>
   );
 }

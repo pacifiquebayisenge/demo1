@@ -46,7 +46,11 @@ function App(): JSX.Element {
             name="Home"
             component={HomeScreen}
           />
-          <Tab.Screen name="Cart" component={CartScreen} />
+          <Tab.Screen
+            name="Cart"
+            component={CartScreen}
+            options={{title: 'My Cart'}}
+          />
         </Tab.Navigator>
       </NavigationContainer>
     </QueryClientProvider>

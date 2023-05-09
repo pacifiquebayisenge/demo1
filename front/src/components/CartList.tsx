@@ -1,6 +1,13 @@
 import {useQuery} from '@tanstack/react-query';
 import React, {useCallback, useRef, useState} from 'react';
-import {View, StyleSheet, RefreshControl, ViewToken} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  RefreshControl,
+  ViewToken,
+  TouchableOpacity,
+} from 'react-native';
 import {getCart} from '../api';
 import CartItem from './CartItem';
 import {queryClient} from '../../App';
@@ -8,8 +15,9 @@ import {useSharedValue} from 'react-native-reanimated';
 import {FlatList} from 'react-native-gesture-handler';
 import {LoadingComponent} from '../shared/loadingComponent';
 import {ErrorComponent} from '../shared/errorComponent';
+import {EmptyComponent} from '../shared/emptyComponent';
 
-const CartList = () => {
+const CartList = ({navigation}: any) => {
   const {
     status,
     error,
@@ -31,6 +39,7 @@ const CartList = () => {
 
   const onRefresh = () => {
     setRefreshing(true);
+    console.log(cartFruits.length);
     queryClient.refetchQueries(['cartFruits']);
     setTimeout(() => {
       setRefreshing(false);
@@ -93,6 +102,16 @@ const CartList = () => {
         contentContainerStyle={styles.flatListStyling}
         onViewableItemsChanged={onViewableItemsChanged}
         keyExtractor={item => item.id}
+        ListEmptyComponent={
+          <View style={styles.emptyView}>
+            <EmptyComponent />
+            <TouchableOpacity
+              style={styles.btn}
+              onPress={() => navigation.navigate('Home')}>
+              <Text style={styles.textStyle}>Fruit Market</Text>
+            </TouchableOpacity>
+          </View>
+        }
         renderItem={({item, index}) => {
           const backgroundColor = colors[index % colors.length];
 
@@ -117,6 +136,22 @@ const styles = StyleSheet.create({
   },
   flatListStyling: {
     paddingBottom: 80,
+  },
+  emptyView: {
+    alignItems: 'center',
+    gap: 25,
+  },
+  btn: {
+    width: 200,
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: '#add8e6',
+  },
+  textStyle: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 

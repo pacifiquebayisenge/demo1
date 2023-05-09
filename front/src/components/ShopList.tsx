@@ -1,20 +1,10 @@
 import React, {useCallback} from 'react';
 import {View, StyleSheet, FlatList, ViewToken} from 'react-native';
 import Card from './Card';
-import {useQuery} from '@tanstack/react-query';
-import {getFruits} from '../api';
 import {useSharedValue} from 'react-native-reanimated';
-import {LoadingComponent} from '../shared/loadingComponent';
 import {ErrorComponent} from '../shared/errorComponent';
 
 const ShopList = ({fruits}: any) => {
-  // const {
-  //   isSuccess,
-  //   status,
-  //   error,
-  //   data: fruits,
-  // } = useQuery({queryKey: ['fruits'], queryFn: () => getFruits('', '')});
-
   const viewableItems = useSharedValue<ViewToken[]>([]);
 
   const onViewableItemsChanged = useCallback(
@@ -55,18 +45,6 @@ const ShopList = ({fruits}: any) => {
 
     return uniqueColors;
   };
-
-  // // eslint-disable-next-line curly
-  // if (status === 'error') {
-  //   console.log('=>', JSON.stringify(error));
-  //   return ErrorComponent();
-  // }
-
-  // if (status === 'loading') {
-  //   console.log('<=', 'loading...');
-
-  //   return LoadingComponent();
-  // }
 
   if (fruits) {
     console.log('=>', 'Fruits Data Recieved');

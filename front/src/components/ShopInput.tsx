@@ -9,8 +9,8 @@ import {ErrorComponent} from '../shared/errorComponent';
 import Slider from '@react-native-community/slider';
 
 const ShopInut = () => {
-  const [inputName, setinputName] = useState('');
-  const [inputPrice, setinputPrice] = useState('');
+  const [inputName, setInputName] = useState('');
+  const [inputPrice, setInputPrice] = useState('');
 
   const {
     refetch,
@@ -37,6 +37,7 @@ const ShopInut = () => {
           'succes',
           fruits.map((f: any) => f.name),
         );
+
         return <ShopList fruits={fruits} />;
 
       default:
@@ -45,13 +46,10 @@ const ShopInut = () => {
   };
 
   const sliderHandler = (value: any) => {
-    console.log(value);
     let price = value.toFixed(2);
-    setinputPrice(price);
+    setInputPrice(price);
     refetch();
   };
-
-  console.log(setinputPrice);
 
   return (
     <View style={styles.test}>
@@ -61,7 +59,7 @@ const ShopInut = () => {
           autoCorrect={false}
           style={styles.input}
           onChangeText={val => {
-            setinputName(val);
+            setInputName(val);
             refetch();
           }}
         />

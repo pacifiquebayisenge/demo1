@@ -136,6 +136,7 @@ const CartItem = ({
       opacity: cardOpacity.value,
     };
   });
+
   const cardAnimation = useAnimatedStyle(() => {
     return {
       opacity: cardOpacity.value,
