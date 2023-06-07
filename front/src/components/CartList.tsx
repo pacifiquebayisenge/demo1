@@ -116,6 +116,7 @@ const CartList = ({navigation}: any) => {
           const backgroundColor = colors[index % colors.length];
 
           return (
+            //?
             <CartItem
               item={item}
               backgroundColor={backgroundColor}
